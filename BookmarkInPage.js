@@ -30,12 +30,12 @@ document.body.addEventListener("click", (event) => {
   // check if ctrl was pressed
   if (event.ctrlKey) {
     let bu = document.createElement("button");
-    bu.innerText = event.target.textContent;
-    bu.style.overflow = "hidden";
-    bu.style.textOverflow = "ellipsis";
-    bu.style.whiteSpace = "nowrap";
+    bu.innerText = event.target.textContent
+      .replace(/\s/g, "")
+      .slice(0, 7)
+      .concat("...");
     bu.style.width = "100%";
-    console.log("text", event.target.textContent);
+    console.log("text");
     bu.onclick = function () {
       event.target.scrollIntoView();
     };
