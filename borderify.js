@@ -34,44 +34,38 @@ document.body.addEventListener("click", (event) => {
     bu.onclick = function () {
       event.target.scrollIntoView();
     };
+    map.set(event.target, {
+      button: bu,
+      scrollHeight: window.scrollY + event.clientY + factor,
+    });
     //find postion for element to be placed to preserve flow
+    // findIndex will rt -1 if array empty
     let index = arrc.findIndex(function (z, i) {
-      console.log(z.scrollHeight, arrc[i + 1]);
-      if (arrc[i + 1]) {
-        console.log("data", z.scrollHeight, arrc[i + 1].scrollHeight, i);
-        if (z.scrollHeight < arrc[i + 1].scrollHeight) {
+      let getElem = map.get(event.target);
+      let getElemNext = map.get(z);
+
+      if (getElemNext) {
+        console.log("data", getElem, i);
+        if (getElem.scrollHeight < getElemNext.scrollHeight) {
+          console.log("true");
           return true;
-        } else {
-          console.log("false");
-          return false;
         }
-      } else {
-        console.log("elseT");
-        // at last index, threfore return it
-        return true;
       }
     });
     console.log(index);
-    // pos is at btwn somwhre
+
     if (index >= 0) {
-      arrc.splice(index + 1, 0, {
-        element: event.target,
-        scrollHeight: window.scrollY + event.clientY + factor,
-      });
-      console.log("append", arrc);
+      // pos is at btwn somwhre
+      console.log("append");
+      arrc.splice(index, 0, event.target);
       arrc.forEach((z) => {
-        el.appendChild(z.element);
+        el.appendChild(map.get(z).button);
       });
-      // el.insertBefore(bu, arrc[index + 1].element);
-    }
-    // push element at last index
-    else {
-      console.log("else");
-      arrc.push({
-        element: event.target,
-        scrollHeight: window.scrollY + event.clientY + factor,
-      });
-      el.appendChild(bu);
+    } else {
+      // push element at last index
+      console.log("last", map.get(event.target).scrollHeight);
+      arrc.push(event.target);
+      el.appendChild(map.get(event.target).button);
     }
 
     console.log(arrc);
@@ -81,6 +75,7 @@ document.body.addEventListener("click", (event) => {
 window.onresize = function () {
   factor = document.body.scrollHeight - size;
   arrc.forEach((z) => {
-    z.scrollHeight = z.scrollHeight + factor;
+    let elem = map.get(z);
+    elem.scrollHeight = elem.scrollHeight + factor;
   });
 };
