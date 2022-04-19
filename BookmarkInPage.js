@@ -9,7 +9,7 @@ let elem = document.createElement("div");
 elem.style.width = "100px";
 elem.style.top = "100px";
 elem.style.right = "50px";
-elem.style.height = "100px";
+elem.style.height = "auto";
 elem.style.zIndex = "9999";
 elem.style.position = "fixed";
 elem.style.border = "11px solid yellow";
@@ -30,9 +30,10 @@ document.body.addEventListener("click", (event) => {
   // check if ctrl was pressed
   if (event.ctrlKey) {
     let bu = document.createElement("button");
+    bu.innerText = event.target.textContent;
     bu.style.overflow = "hidden";
     bu.style.textOverflow = "ellipsis";
-    bu.innerText = "testboansdoansdo";
+    bu.style.whiteSpace = "nowrap";
     bu.style.width = "100%";
     console.log("text", event.target.textContent);
     bu.onclick = function () {
