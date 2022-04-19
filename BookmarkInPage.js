@@ -45,35 +45,30 @@ document.body.addEventListener("click", (event) => {
       let getElemNext = map.get(z);
 
       if (getElemNext) {
-        console.log("data", getElem, i);
         if (getElem.scrollHeight < getElemNext.scrollHeight) {
-          console.log("true");
           return true;
         }
       }
     });
-    console.log(index);
 
     if (index >= 0) {
       // pos is at btwn somwhre
-      console.log("append");
       arrc.splice(index, 0, event.target);
       arrc.forEach((z) => {
         el.appendChild(map.get(z).button);
       });
     } else {
       // push element at last index
-      console.log("last", map.get(event.target).scrollHeight);
       arrc.push(event.target);
       el.appendChild(map.get(event.target).button);
     }
-
-    console.log(arrc);
   }
 });
 
+// event listener for zoom +/-
 window.onresize = function () {
   factor = document.body.scrollHeight - size;
+  size = document.body.scrollHeight;
   arrc.forEach((z) => {
     let elem = map.get(z);
     elem.scrollHeight = elem.scrollHeight + factor;
