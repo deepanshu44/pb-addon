@@ -1,17 +1,38 @@
 class Addon {
   constructor() {
     this.marksList = document.createElement("div");
-    this.el = document.createElement("li");
+    this.el = document.createElement("ul");
     this.style_main = document.createElement("style");
+    //todo
     this.factor = 0;
     this.size = document.body.scrollHeight;
     this.map = new WeakMap();
+    //required to keep items in list in order of documents
     this.arrc = [];
   }
   config() {
     this.marksList.setAttribute("class", "ff-addon1");
     this.style_main.innerText =
-      ".ff-addon1{width: 100px; top: 100px; right: 50px; height: auto; z-index: 9999; position: fixed; border: 11px solid yellow;}";
+      ".ff-addon1{\
+	    top: 100px;\
+	    right: 50px;\
+            width: 100px;\
+	    height: auto;\
+            color:grey;\
+	    z-index: 9999;\
+	    position: fixed;\
+            padding-top:20px;\
+            padding-left:10px;\
+	    border: 11px solid #eaeac7;\
+	    border-top-width: 37px;\
+            background-color: white;\
+	    border-top-left-radius: 28px;\
+             },\
+	.ff-addon1 li{\
+	    width: 100%;\
+	    padding: 10px;\
+	}\
+";
     document.body.appendChild(this.style_main);
     document.body.insertBefore(this.marksList, document.body.firstChild);
     this.el.style.listStyle = "none";
@@ -30,7 +51,7 @@ class Addon {
   addToList({ target, ctrlKey, clientY }) {
     // check if ctrl was pressed
     if (ctrlKey) {
-      let bu = document.createElement("button");
+      let bu = document.createElement("li");
       bu.innerText = target.textContent
         .replace(/\s/g, "")
         .slice(0, 7)
