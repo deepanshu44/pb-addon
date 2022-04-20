@@ -1,0 +1,29 @@
+.ff-addon1{
+    top: 100px;
+    right: 50px;
+    width: 200px;
+    height: auto;
+    color:grey;
+    z-index: 9999;
+    position: fixed;
+    padding-top:20px;
+    border: 11px solid #eaeac7;
+    border-top-width: 37px;
+    background-color: white;
+    border-top-left-radius: 28px;
+},
+.ff-addon1 .image{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+},
+.ff-addon1 ul {
+    list-style: disc;
+},
+.ff-addon1 li{
+    padding-left: 20px;
+    width: 100%;
+    },
+.ff-addon1 li:hover{
+    background-c1olor: beige;
+}

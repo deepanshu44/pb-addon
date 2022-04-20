@@ -7,7 +7,7 @@
     "homepage_url": "https://github.com/mdn/webextensions-examples/tree/master/borderify",
   "permissions": ["notifications"],
     "browser_action": {
-        "default_icon": "icons/border-48.png",
+        "default_icon": "icons/ylw-pushpin.png",
 	"default_title": "Whereami?"
     },
     "background": {
@@ -18,5 +18,9 @@
       "matches": ["<all_urls>"],
       "js": ["BookmarkInPage.js"]
     }
+  ],
+      "web_accessible_resources": [
+	  "content.css"
   ]
+
 }
