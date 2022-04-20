@@ -1,81 +1,97 @@
-/*
-Just draw a border round the document.body.
-*/
-document.body.style.border = "5px solid green";
-
-let map = new WeakMap();
-
-let elem = document.createElement("div");
-elem.style.width = "100px";
-elem.style.top = "100px";
-elem.style.right = "50px";
-elem.style.height = "auto";
-elem.style.zIndex = "9999";
-elem.style.position = "fixed";
-elem.style.border = "11px solid yellow";
-
-document.body.insertBefore(elem, document.body.firstChild);
-let el = document.createElement("li");
-el.style.listStyle = "none";
-el.id = 123;
-
-elem.appendChild(el);
-
-let factor = 0;
-let size = document.body.scrollHeight;
-let arrc = [];
-
-// add event listener to body
-document.body.addEventListener("click", (event) => {
-  // check if ctrl was pressed
-  if (event.ctrlKey) {
-    let bu = document.createElement("button");
-    bu.innerText = event.target.textContent
-      .replace(/\s/g, "")
-      .slice(0, 7)
-      .concat("...");
-    bu.style.width = "100%";
-    console.log("text");
-    bu.onclick = function () {
-      event.target.scrollIntoView();
-    };
-    map.set(event.target, {
-      button: bu,
-      scrollHeight: window.scrollY + event.clientY + factor,
-    });
-    //find postion for element to be placed to preserve flow
-    // findIndex will rt -1 if array empty
-    let index = arrc.findIndex(function (z, i) {
-      let getElem = map.get(event.target);
-      let getElemNext = map.get(z);
-
-      if (getElemNext) {
-        if (getElem.scrollHeight < getElemNext.scrollHeight) {
-          return true;
-        }
+class Addon {
+  constructor() {
+    this.marksList = document.createElement("div");
+    this.el = document.createElement("li");
+    this.style_main = document.createElement("style");
+    this.factor = 0;
+    this.size = document.body.scrollHeight;
+    this.map = new WeakMap();
+    this.arrc = [];
+  }
+  config() {
+    this.marksList.setAttribute("class", "ff-addon1");
+    this.style_main.innerText =
+      ".ff-addon1{width: 100px; top: 100px; right: 50px; height: auto; z-index: 9999; position: fixed; border: 11px solid yellow;}";
+    document.body.appendChild(this.style_main);
+    document.body.insertBefore(this.marksList, document.body.firstChild);
+    this.el.style.listStyle = "none";
+    this.marksList.appendChild(this.el);
+  }
+  addonInit() {
+    // add event listener to body
+    document.body.addEventListener("click", (event) => {
+      if (this.map.has(event.target)) {
+        //do nothing
+      } else {
+        this.addToList(event);
       }
     });
-
-    if (index >= 0) {
-      // pos is at btwn somwhre
-      arrc.splice(index, 0, event.target);
-      arrc.forEach((z) => {
-        el.appendChild(map.get(z).button);
+  }
+  addToList({ target, ctrlKey, clientY }) {
+    // check if ctrl was pressed
+    if (ctrlKey) {
+      let bu = document.createElement("button");
+      bu.innerText = target.textContent
+        .replace(/\s/g, "")
+        .slice(0, 7)
+        .concat("...");
+      bu.style.width = "100%";
+      bu.onclick = function () {
+        target.scrollIntoView();
+      };
+      this.map.set(target, {
+        button: bu,
+        scrollHeight: window.scrollY + clientY + this.factor,
       });
-    } else {
-      // push element at last index
-      arrc.push(event.target);
-      el.appendChild(map.get(event.target).button);
+      //find postion for element to be placed in order of appearance in the document
+
+      let index = this.arrc.findIndex((z) => {
+        // findIndex will return minus 1 if array empty and condition is false
+        let getElem = this.map.get(target);
+        let getElemNext = this.map.get(z);
+        if (getElemNext) {
+          if (getElem.scrollHeight < getElemNext.scrollHeight) {
+            return true;
+          }
+        }
+      });
+      if (index >= 0) {
+        // element has to be placed in between somewhere in the list
+        this.arrc.splice(index, 0, target);
+        this.arrc.forEach((z) => {
+          this.el.appendChild(this.map.get(z).button);
+        });
+      } else {
+        // push element at last index
+        this.arrc.push(target);
+        this.el.appendChild(this.map.get(target).button);
+      }
     }
   }
-});
+  zoom() {
+    // event listener for zoom +/-
+    window.onresize = function () {
+      this.factor = document.body.scrollHeight - size;
+      size = document.body.scrollHeight;
+      this.arrc.forEach((z) => {
+        let elem = this.map.get(z);
+        elem.scrollHeight = elem.scrollHeight + this.factor;
+      });
+    };
+  }
+}
 
-// event listener for zoom +/-
-window.onresize = function () {
-  factor = document.body.scrollHeight - size;
-  size = document.body.scrollHeight;
-  arrc.forEach((z) => {
-    let elem = map.get(z);
-    elem.scrollHeight = elem.scrollHeight + factor;
-  });
-};
+let addon = new Addon();
+addon.config();
+addon.addonInit();
+browser.runtime.onMessage.addListener((request) => {
+  // enable the addon in webpage
+  console.log("Message from the background script:-");
+  console.log(request);
+  if (request.power) {
+    document.body.getElementsByClassName("ff-addon1")[0].style.display = "";
+  } else {
+    document.body.getElementsByClassName("ff-addon1")[0].style.display = "none";
+  }
+  return Promise.resolve({ response: "Hi from content script" });
+});
