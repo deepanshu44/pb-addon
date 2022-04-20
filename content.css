@@ -11,6 +11,7 @@
     border-top-width: 37px;
     background-color: white;
     border-top-left-radius: 28px;
+    outline-style: groove;
 },
 .ff-addon1 .image{
     position: absolute;

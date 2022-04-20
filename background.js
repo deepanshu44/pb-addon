@@ -1,6 +1,6 @@
 // background-script.js
 "use strict";
-let power = false;
+let power = true;
 function onError(error) {
   console.error(`Error: ${error}`);
 }
@@ -16,7 +16,6 @@ function sendMessageToTabs(tabs) {
 }
 
 browser.browserAction.onClicked.addListener(() => {
-  power = !power;
   browser.tabs
     .query({
       currentWindow: true,
@@ -24,4 +23,5 @@ browser.browserAction.onClicked.addListener(() => {
     })
     .then(sendMessageToTabs)
     .catch(onError);
+  power = !power;
 });
