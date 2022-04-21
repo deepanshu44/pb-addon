@@ -21,6 +21,5 @@
   ],
       "web_accessible_resources": [
 	  "content.css"
-  ]
-
+      ]
 }

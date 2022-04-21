@@ -130,7 +130,6 @@ class Addon {
       };
     }
   }
-  delete(arg) {}
   zoom() {
     /*
      * avoid for now aka todo
