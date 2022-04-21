@@ -1,20 +1,11 @@
 /**
-   |--------------------------------------------------
-   | Basic flow:
-   | - create all variables
-   | - config them, i.e. attach css
-   | - add event listener to body which will
-   |   add particular element to the list
-   |
-   | Todos:
-   | - persisting entries using storage api
-   | - UI improvement
-   | - ablity to delete entries(stylesheet bug first needed to be resolved)
-   | - add smooth scroll
-   | - dark/light mode
-   | - zooming
-   |--------------------------------------------------
-*/
+ * Basic flow:
+ * - create elements and add CSS to them
+ * - add event listener to body which will
+ *   add particular element to the list when the user will click
+ * - li element will be created when the user will click
+ *   and added to ul if ul doesn't have it
+ */
 
 class Addon {
   constructor() {
@@ -134,15 +125,14 @@ class Addon {
     /*
      * avoid for now aka todo
      */
-
     // event listener for zoom +/-
-    window.onresize = function () {
-      this.factor = document.body.scrollHeight - size;
-      size = document.body.scrollHeight;
-      this.liOrderArray.forEach((z) => {
-        // elem.scrollHeight = elem.scrollHeight + this.factor;
-      });
-    };
+    // window.onresize = function () {
+    //   this.factor = document.body.scrollHeight - size;
+    //   size = document.body.scrollHeight;
+    //   this.liOrderArray.forEach((z) => {
+    //     // elem.scrollHeight = elem.scrollHeight + this.factor;
+    //   });
+    // };
   }
 }
 

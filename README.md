@@ -10,7 +10,7 @@
 ## todo
 * persisting entries using storage api
 * UI improvement
-* ablity to delete entries(stylesheet bug first needed to be resolved)
+* ~~ablity to delete entries(stylesheet bug first needed to be resolved)~~
 * add smooth scroll
 * dark/light mode
 * zooming
