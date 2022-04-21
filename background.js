@@ -1,6 +1,6 @@
 // background-script.js
 "use strict";
-let power = true;
+let power = false;
 function onError(error) {
   console.error(`Error: ${error}`);
 }

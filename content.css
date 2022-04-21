@@ -12,19 +12,34 @@
     background-color: white;
     border-top-left-radius: 28px;
     outline-style: groove;
-},
+}
 .ff-addon1 .image{
     position: absolute;
-    width: 20px;
-    height: 20px;
-},
+    top: -72px;
+    right: -39px;
+}
 .ff-addon1 ul {
-    list-style: disc;
-},
+
+}
 .ff-addon1 li{
-    padding-left: 20px;
-    width: 100%;
-    },
+    padding:5px 0 0 10px;
+    width: 95%;
+}
+.ff-addon1 li div{
+    display: inline-block;
+    width: 86%;
+}
+.ff-addon1 li span{
+    position:absolute;
+    right:12px;
+    font-weigth:12px;
+    color:white;
+    background-color:#ff6a6a;
+    padding: 0px 4px 0px 4px;
+}
+.ff-addon1 li:nth-child(even){
+background-color: aliceblue;
+    }
 .ff-addon1 li:hover{
-    background-c1olor: beige;
+    background-color: beige;
 }
