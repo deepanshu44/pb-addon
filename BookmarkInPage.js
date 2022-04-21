@@ -24,7 +24,7 @@ class Addon {
     // css added with stylesheet
     this.style_main = document.createElement("link");
     //required to keep the items in order of appearance in the document
-    this.arrc = [];
+    this.liOrderArray = [];
     //todo add zoom
     this.factor = 0;
     this.size = document.body.scrollHeight;
@@ -49,7 +49,9 @@ class Addon {
   addonInit() {
     // add event listener to body
     document.body.addEventListener("click", (event) => {
-      let elementExists = this.arrc.some((z) => z.pointTo === event.target);
+      let elementExists = this.liOrderArray.some(
+        (z) => z.pointTo === event.target
+      );
       if (elementExists) {
         //do nothing
       } else {
@@ -82,39 +84,49 @@ class Addon {
       //find postion for element to be placed in the array in order of
       //its appearance in the document
       let scrollHeight = window.scrollY + clientY + this.factor;
-      let index = this.arrc.findIndex((z, i) => {
+      let index = this.liOrderArray.findIndex((z, i) => {
         // findIndex will return minus 1 if array empty and condition is false
         if (scrollHeight < z.scrollHeight) {
           return true;
         }
       });
+
+      //set attribute to animate it
+      li.setAttribute("class", "add");
+
       if (index >= 0) {
         // element has to be placed in between somewhere in the list
-        this.arrc.splice(index, 0, {
+        this.liOrderArray.splice(index, 0, {
           pointTo: target,
           button: li,
           scrollHeight: window.scrollY + clientY + this.factor,
         });
-        this.arrc.forEach((z, i) => {
+        this.liOrderArray.forEach((z, i) => {
           this.ul.appendChild(z.button);
         });
       } else {
         // push element at last index
-        this.arrc.push({
+        this.liOrderArray.push({
           pointTo: target,
           button: li,
           scrollHeight: window.scrollY + clientY + this.factor,
         });
 
-        this.ul.appendChild(this.arrc[this.arrc.length - 1].button);
-        index = this.arrc.length - 1;
+        this.ul.appendChild(
+          this.liOrderArray[this.liOrderArray.length - 1].button
+        );
+        index = this.liOrderArray.length - 1;
       }
+      setTimeout(() => {
+        li.removeAttribute("class");
+      }, 500);
+
       del.onclick = () => {
-        if (index >= 0) {
-          this.ul.removeChild(this.arrc.splice(index, 1)[0].button);
-        } else {
-          this.ul.removeChild(this.arrc.pop().button);
-        }
+        li.setAttribute("class", "remove");
+        let index = this.liOrderArray.findIndex((z) => z.button === this.li);
+        setTimeout(() => {
+          this.ul.removeChild(this.liOrderArray.splice(index, 1)[0].button);
+        }, 500);
       };
     }
   }
@@ -128,7 +140,7 @@ class Addon {
     window.onresize = function () {
       this.factor = document.body.scrollHeight - size;
       size = document.body.scrollHeight;
-      this.arrc.forEach((z) => {
+      this.liOrderArray.forEach((z) => {
         // elem.scrollHeight = elem.scrollHeight + this.factor;
       });
     };

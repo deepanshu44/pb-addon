@@ -12,6 +12,8 @@
     background-color: white;
     border-top-left-radius: 28px;
     outline-style: groove;
+    text-align: left;
+    /* animation: 1s linear slidein; */
 }
 .ff-addon1 .image{
     position: absolute;
@@ -19,11 +21,17 @@
     right: -39px;
 }
 .ff-addon1 ul {
-
+    list-style: none;
 }
 .ff-addon1 li{
-    padding:5px 0 0 10px;
-    width: 95%;
+    padding:5px 0 5px 10px;
+    contain: content;
+}
+.ff-addon1 li.add{
+    animation: 0.5s linear slidein;
+}
+.ff-addon1 li.remove{
+    animation: 0.5s linear slidein reverse;
 }
 .ff-addon1 li div{
     display: inline-block;
@@ -42,4 +50,15 @@ background-color: aliceblue;
     }
 .ff-addon1 li:hover{
     background-color: beige;
+}
+
+@keyframes slidein{
+    from {
+	margin-left: -20px;
+	opacity: 0;
+    }
+    to {
+	margin-left: 0;
+	opacity: 1;
+    }
 }

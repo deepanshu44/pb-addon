@@ -1,18 +1,13 @@
 // background-script.js
 "use strict";
-let power = false;
+let power = true;
 function onError(error) {
   console.error(`Error: ${error}`);
 }
 
 function sendMessageToTabs(tabs) {
-  browser.tabs
-    .sendMessage(tabs[0].id, { power: power })
-    .then((response) => {
-      console.log("Message from the content script:");
-      console.log(response.response);
-    })
-    .catch(onError);
+  browser.tabs.sendMessage(tabs[0].id, { power: power }).catch(onError);
+  power = !power;
 }
 
 browser.browserAction.onClicked.addListener(() => {
@@ -23,5 +18,4 @@ browser.browserAction.onClicked.addListener(() => {
     })
     .then(sendMessageToTabs)
     .catch(onError);
-  power = !power;
 });
