@@ -4,6 +4,8 @@
 * Turn off by clicking on icon in the toolbar
 * Use Ctrl+click to mark
 
+## Download it here
+[https://addons.mozilla.org/addon/bookmark-in-webpage/](https://addons.mozilla.org/addon/bookmark-in-webpage/ "Download addon")
 
 ![Screenshot of the Firefox Addon](./image.png?raw=true)
 
