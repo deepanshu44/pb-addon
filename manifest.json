@@ -3,7 +3,7 @@
     "description": "This addon gives you the ability to bookmark inside of a webpage",
     "manifest_version": 2,
     "name": "Bookmark in webpage",
-    "version": "1.0",
+    "version": "1.0.1",
     "homepage_url": "https://github.com/deepanshu44/pb-addon",
     "browser_action": {
         "default_icon": "icons/ylw-pushpin.png",

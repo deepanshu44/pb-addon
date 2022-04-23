@@ -112,9 +112,11 @@ class Addon {
         li.removeAttribute("class");
       }, 500);
 
-      del.onclick = () => {
+      del.onclick = (e) => {
         li.setAttribute("class", "remove");
-        let index = this.liOrderArray.findIndex((z) => z.button === this.li);
+        let index = this.liOrderArray.findIndex(
+          (z) => z.button === e.target.parentElement
+        );
         setTimeout(() => {
           this.ul.removeChild(this.liOrderArray.splice(index, 1)[0].button);
         }, 500);
