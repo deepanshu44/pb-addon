@@ -142,8 +142,6 @@ addon.addonInit();
 
 browser.runtime.onMessage.addListener((request) => {
   // enable the addon in webpage
-  console.log("Message from the background script:-");
-  console.log(request);
   if (request.power) {
     document.body.getElementsByClassName("ff-addon1")[0].style.display = "";
   } else {
