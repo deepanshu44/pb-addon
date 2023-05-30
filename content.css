@@ -1,26 +1,27 @@
 .ff-addon1{
-    top: 100px;
-    right: 50px;
-    width: 200px;
-    height: auto;
-    color:grey;
-    z-index: 9999;
-    position: fixed;
-    padding-top:20px;
-    border: 11px solid #eaeac7;
-    border-top-width: 37px;
     background-color: white;
-    border-top-left-radius: 28px;
-    outline-style: groove;
+    border-radius: 10px;
+    border: 5px double #eaeac7;
+    color:grey;
+    height: auto;
+    outline-style: double;
+    overflow-x: clip;
+    position: fixed;
+    right: 10px;
     text-align: left;
-    /* animation: 1s linear slidein; */
+    top: 100px;
+    width: 15%;
+    z-index: 9999;
+
 }
 .ff-addon1 .image{
+    height: 33px;
     position: absolute;
-    top: -72px;
-    right: -39px;
+    right: -5px;
+    top: -24px;
 }
 .ff-addon1 ul {
+    padding: 0px;
     list-style: none;
 }
 .ff-addon1 li{
@@ -44,8 +45,9 @@
     color:white;
     background-color:#ff6a6a;
     padding: 0px 4px 0px 4px;
+    border: 1px solid black;
 }
-.ff-addon1 li:nth-child(even){
+.ff-addon1 li:nth-child(odd){
 background-color: aliceblue;
     }
 .ff-addon1 li:hover{
@@ -61,4 +63,12 @@ background-color: aliceblue;
 	margin-left: 0;
 	opacity: 1;
     }
+}
+.ff-addon-info{
+    text-align: center;
+}
+.ff-addon-info :nth-child(2){
+    font-weight: bolder;
+    font-size: 15px;
+    margin-left: 5px;
 }
