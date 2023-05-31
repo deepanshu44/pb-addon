@@ -24,6 +24,7 @@
     padding: 0px;
     list-style: none;
     overflow-x: clip;
+    margin: 0px;
 }
 .ff-addon1 li{
     padding:5px 0 5px 10px;
@@ -49,8 +50,8 @@
     border-radius: 5px;
 }
 .ff-addon1 li:nth-child(odd){
-background-color: aliceblue;
-    }
+    background-color: aliceblue;
+}
 .ff-addon1 li:hover{
     background-color: beige;
 }
@@ -76,10 +77,19 @@ background-color: aliceblue;
     margin-left: 2px;
 }
 .ff-addon-info div{
-  display: inline-block;
-  position: absolute;
-  right: 13px;
-  width: 12px;
-  border: 2px solid black;
+    display: inline-block;
+    position: absolute;
+    right: 13px;
+    width: 12px;
+    border: 2px solid black;
+}
+.ff-addon-info button{
+    background: #ff6a6a;
+    font-size: 0.8em;
+    color: white;
+    border: 1px solid black;
+    border-radius: 4px;
+    position: relative;
+    left: 31px;
 }
 

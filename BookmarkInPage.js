@@ -22,7 +22,7 @@ class Addon {
     }
     config() {
         this.marksList.setAttribute("class", "ff-addon1");
-        this.marksList.innerHTML = "<div class=\"ff-addon-info\">Ctrl + L<span>\u{1F5B0}</span></div>"
+        this.marksList.innerHTML = "<div class=\"ff-addon-info\">Ctrl + L<span>\u{1F5B0}</span><button class=\"ff-addon-button\">clear</button</div>"
 
         // hide initially
         this.marksList.style.display = "none";
@@ -37,6 +37,14 @@ class Addon {
         pinImage.src = browser.runtime.getURL("icons/ylw-pushpin.png");
         pinImage.className = "image";
         this.marksList.insertAdjacentElement("afterbegin", pinImage);
+        // document.querySelector(".ff-addon-button").onclick = () => document.querySelector(".ff-addon1 ul").innerHTML = ""
+        document.querySelector(".ff-addon-button").onclick = function() {
+            let ul = document.querySelector(".ff-addon1 ul")
+            let count = ul.childElementCount;
+            while (count--) {
+                document.querySelector(".ff-addon1 ul span").click()
+            }
+        }
     }
 
     addonInit() {
@@ -63,7 +71,7 @@ class Addon {
                 .slice(0, 19)
                 .concat("...");
             div.onclick = function() {
-                target.scrollIntoView({ block: "center" });
+                target.scrollIntoView({ block: "center", behavior: "smooth" });
                 //animate target to get user attention
                 target.animate(
                     [
