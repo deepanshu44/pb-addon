@@ -70,6 +70,7 @@
     position: relative;
     text-align: center;
     font-size: 13px;
+    line-height: initial;
 }
 .ff-addon-info span{
     font-weight: bolder;
