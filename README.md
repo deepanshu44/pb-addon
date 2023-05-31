@@ -8,7 +8,7 @@
 ## Download it here
 [https://addons.mozilla.org/addon/bookmark-in-webpage/](https://addons.mozilla.org/addon/bookmark-in-webpage/ "Download addon")
 
-![Screenshot of the Firefox Addon](./image.png?raw=true)
+![Working of the Firefox Addon](./directory/output.mp4)
 
 ## todo
 * persisting entries using storage api
