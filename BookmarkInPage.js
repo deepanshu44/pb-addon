@@ -167,13 +167,16 @@ class Addon {
 let addon = new Addon();
 addon.config();
 addon.addonInit();
+let power = false;
 
 browser.runtime.onMessage.addListener((request) => {
     // enable the addon in webpage
-    if (request.power) {
+    if (!power) {
         document.body.getElementsByClassName("ff-addon1")[0].style.display = "";
+        power = !power
     } else {
         document.body.getElementsByClassName("ff-addon1")[0].style.display = "none";
+        power = !power
     }
     return Promise.resolve({ response: "Hi from content script" });
 });
