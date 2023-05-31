@@ -5,9 +5,8 @@
     color:grey;
     height: auto;
     outline-style: double;
-    overflow-x: clip;
     position: fixed;
-    right: 10px;
+    right: 1vw;
     text-align: left;
     top: 100px;
     width: 15%;
@@ -17,12 +16,14 @@
 .ff-addon1 .image{
     height: 33px;
     position: absolute;
-    right: -5px;
+    left: -5px;
     top: -24px;
 }
 .ff-addon1 ul {
+    font-size: 0.7em;
     padding: 0px;
     list-style: none;
+    overflow-x: clip;
 }
 .ff-addon1 li{
     padding:5px 0 5px 10px;
@@ -41,11 +42,11 @@
 .ff-addon1 li span{
     position:absolute;
     right:12px;
-    font-weigth:12px;
     color:white;
     background-color:#ff6a6a;
     padding: 0px 4px 0px 4px;
     border: 1px solid black;
+    border-radius: 5px;
 }
 .ff-addon1 li:nth-child(odd){
 background-color: aliceblue;
@@ -65,10 +66,20 @@ background-color: aliceblue;
     }
 }
 .ff-addon-info{
+    position: relative;
     text-align: center;
+    font-size: 13px;
 }
-.ff-addon-info :nth-child(2){
+.ff-addon-info span{
     font-weight: bolder;
     font-size: 15px;
-    margin-left: 5px;
+    margin-left: 2px;
 }
+.ff-addon-info div{
+  display: inline-block;
+  position: absolute;
+  right: 13px;
+  width: 12px;
+  border: 2px solid black;
+}
+
