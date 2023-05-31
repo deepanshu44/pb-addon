@@ -19,6 +19,9 @@ Click on image for video demonstration
 * dark/light mode
 * zooming
 
+## Contribute
+Contributions are welcome
+
 ## icon 
 [icon](https://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png "an icon")
 
