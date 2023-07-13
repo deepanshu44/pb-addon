@@ -7,7 +7,6 @@ function onError(error) {
 
 function sendMessageToTabs(tabs) {
     browser.tabs.sendMessage(tabs[0].id, {}).catch(onError);
-    power = !power;
 }
 
 browser.browserAction.onClicked.addListener(() => {

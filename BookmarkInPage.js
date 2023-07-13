@@ -25,20 +25,56 @@ class Addon {
         this.marksList.innerHTML = "<div class=\"ff-addon-info\">Ctrl + L<span>\u{1F5B0}</span><button class=\"ff-addon-button\">clear</button</div>"
 
         // hide initially
-        this.marksList.style.display = "none";
+        // this.marksList.style.display = "none";
         this.style_main.rel = "stylesheet";
         this.style_main.href = browser.runtime.getURL("content.css");
         document.body.appendChild(this.style_main);
-        document.body.insertBefore(this.marksList, document.body.firstChild);
         this.marksList.appendChild(this.ul);
 
         //pinImage
         let pinImage = document.createElement("img");
         pinImage.src = browser.runtime.getURL("icons/ylw-pushpin.png");
         pinImage.className = "image";
+        pinImage.addEventListener("click", (e) => {
+            let addon = document.querySelector(".ff-addon1");
+            let addonRight = getComputedStyle(addon).right;
+
+            if (addonRight.match(/-/)) {
+                //addon is hidden
+                addon.animate(
+                    [
+                        // keyframes
+                        { right: addonRight },
+                        { right: "1vw" }
+                    ],
+                    {
+                        // timing options
+                        duration: 300,
+                        iterations: 1,
+                        fill: "forwards"
+                    }
+                )
+            } else {
+                //hide addon
+                addon.animate(
+                    [
+                        // keyframes
+                        { right: addonRight },
+                        { right: "-13vw" }
+                    ],
+                    {
+                        // timing options
+                        duration: 300,
+                        iterations: 1,
+                        fill: "forwards"
+                    }
+                )
+            }
+        })
         this.marksList.insertAdjacentElement("afterbegin", pinImage);
         // document.querySelector(".ff-addon-button").onclick = () => document.querySelector(".ff-addon1 ul").innerHTML = ""
-        document.querySelector(".ff-addon-button").onclick = function() {
+        // document.querySelector(".ff-addon-button").onclick = function() {
+        this.marksList.onclick = function() {
             let ul = document.querySelector(".ff-addon1 ul")
             let count = ul.childElementCount;
             while (count--) {
@@ -50,13 +86,19 @@ class Addon {
     addonInit() {
         // add event listener to body
         document.body.addEventListener("click", (event) => {
-            let elementExists = this.liOrderArray.some(
-                (z) => z.pointTo === event.target
-            );
-            if (elementExists) {
-                //do nothing
+            if (e.ctrlKey) {
+                // disable ctrl click on addon UI 
+                e.stopPropagation()
             } else {
-                this.addToList(event);
+
+                let elementExists = this.liOrderArray.some(
+                    (z) => z.pointTo === event.target
+                );
+                if (elementExists) {
+                    //do nothing
+                } else {
+                    this.addToList(event);
+                }
             }
         });
     }
@@ -167,60 +209,24 @@ class Addon {
 let addon = new Addon();
 addon.config();
 addon.addonInit();
-let power = false;
+let ref = addon.marksList
+let power = false; //initially do not display
 
 browser.runtime.onMessage.addListener((request) => {
     // enable the addon in webpage
-    if (!power) {
-        document.body.getElementsByClassName("ff-addon1")[0].style.display = "";
+    console.log("message:", power, request)
+    if (power) {
+        console.log("power is on", ref)
+        document.body.removeChild(ref)
         power = !power
     } else {
-        document.body.getElementsByClassName("ff-addon1")[0].style.display = "none";
+        console.log("append", ref)
+        document.body.appendChild(ref)
         power = !power
     }
     return Promise.resolve({ response: "Hi from content script" });
 });
 
-// disable ctrl click on addon UI 
-document.getElementsByClassName("ff-addon1")[0].addEventListener("click", (e) => {
-    if (e.ctrlKey) {
-        e.stopPropagation()
-    }
-})
 
-document.querySelector(".ff-addon1 .image").addEventListener("click", (e) => {
-    let addon = document.querySelector(".ff-addon1");
-    let addonRight = getComputedStyle(addon).right;
 
-    if (addonRight.match(/-/)) {
-        //addon is hidden
-        addon.animate(
-            [
-                // keyframes
-                { right: addonRight },
-                { right: "1vw" }
-            ],
-            {
-                // timing options
-                duration: 300,
-                iterations: 1,
-                fill: "forwards"
-            }
-        )
-    } else {
-        //hide addon
-        addon.animate(
-            [
-                // keyframes
-                { right: addonRight },
-                { right: "-13vw" }
-            ],
-            {
-                // timing options
-                duration: 300,
-                iterations: 1,
-                fill: "forwards"
-            }
-        )
-    }
-})
+document.querySelector(".ff-addon1 .image")
