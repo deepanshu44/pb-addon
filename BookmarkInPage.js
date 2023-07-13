@@ -72,15 +72,6 @@ class Addon {
             }
         })
         this.marksList.insertAdjacentElement("afterbegin", pinImage);
-        // document.querySelector(".ff-addon-button").onclick = () => document.querySelector(".ff-addon1 ul").innerHTML = ""
-        // document.querySelector(".ff-addon-button").onclick = function() {
-        //     // this.marksList.onclick = function() {
-        //     let ul = document.querySelector(".ff-addon1 ul")
-        //     let count = ul.childElementCount;
-        //     while (count--) {
-        //         document.querySelector(".ff-addon1 ul span").click()
-        //     }
-        // }
     }
 
     addonInit() {
@@ -208,13 +199,10 @@ let power = false; //initially do not display
 
 browser.runtime.onMessage.addListener((request) => {
     // enable the addon in webpage
-    console.log("message:", power, request)
     if (power) {
-        console.log("power is on", ref)
         document.body.removeChild(ref)
         power = !power
     } else {
-        console.log("append", ref)
         document.body.appendChild(ref)
         power = !power
     }
