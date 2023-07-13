@@ -6,7 +6,7 @@
     "version": "2.0.0",
     "homepage_url": "https://github.com/deepanshu44/pb-addon",
     "browser_action": {
-        "default_icon": "icons/ylw-pushpin.png",
+        "default_icon": "./directory/ylw-pushpin.png",
 	"default_title": "Bookmark in Webpage"
     },
     "background": {

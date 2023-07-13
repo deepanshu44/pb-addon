@@ -33,7 +33,7 @@ class Addon {
 
         //pinImage
         let pinImage = document.createElement("img");
-        pinImage.src = browser.runtime.getURL("icons/ylw-pushpin.png");
+        pinImage.src = browser.runtime.getURL("directory/ylw-pushpin.png");
         pinImage.className = "image";
         pinImage.addEventListener("click", (e) => {
             let addon = document.querySelector(".ff-addon1");
