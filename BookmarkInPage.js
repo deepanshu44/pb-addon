@@ -74,31 +74,25 @@ class Addon {
         this.marksList.insertAdjacentElement("afterbegin", pinImage);
         // document.querySelector(".ff-addon-button").onclick = () => document.querySelector(".ff-addon1 ul").innerHTML = ""
         // document.querySelector(".ff-addon-button").onclick = function() {
-        this.marksList.onclick = function() {
-            let ul = document.querySelector(".ff-addon1 ul")
-            let count = ul.childElementCount;
-            while (count--) {
-                document.querySelector(".ff-addon1 ul span").click()
-            }
-        }
+        //     // this.marksList.onclick = function() {
+        //     let ul = document.querySelector(".ff-addon1 ul")
+        //     let count = ul.childElementCount;
+        //     while (count--) {
+        //         document.querySelector(".ff-addon1 ul span").click()
+        //     }
+        // }
     }
 
     addonInit() {
         // add event listener to body
         document.body.addEventListener("click", (event) => {
-            if (e.ctrlKey) {
-                // disable ctrl click on addon UI 
-                e.stopPropagation()
+            let elementExists = this.liOrderArray.some(
+                (z) => z.pointTo === event.target
+            );
+            if (elementExists) {
+                //do nothing
             } else {
-
-                let elementExists = this.liOrderArray.some(
-                    (z) => z.pointTo === event.target
-                );
-                if (elementExists) {
-                    //do nothing
-                } else {
-                    this.addToList(event);
-                }
+                this.addToList(event);
             }
         });
     }
@@ -229,4 +223,17 @@ browser.runtime.onMessage.addListener((request) => {
 
 
 
-document.querySelector(".ff-addon1 .image")
+// disable ctrl click on addon UI 
+ref.addEventListener("click", (e) => {
+    if (e.ctrlKey) {
+        e.stopPropagation()
+    }
+    if (e.target.innerHTML === "clear") {
+
+        let ul = document.querySelector(".ff-addon1 ul")
+        let count = ul.childElementCount;
+        while (count--) {
+            document.querySelector(".ff-addon1 ul span").click()
+        }
+    }
+})
