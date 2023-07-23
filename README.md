@@ -13,9 +13,9 @@ Click on image for video demonstration
 
 ## todo
 * persisting entries using storage api
-* UI improvement
+* ~~UI improvement~~
 * ~~ablity to delete entries(stylesheet bug first needed to be resolved)~~
-* add smooth scroll
+* ~~add smooth scroll~~
 * dark/light mode
 * zooming
 
