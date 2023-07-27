@@ -1,6 +1,6 @@
 ##  Basic Flow
 -   Create html elements and add CSS to them.
--  Add event listener to body which will add  the element under pointer to the list when the user ctrl+clicks.
+-  Add event listener to body which will add  the element under pointer to the marksList when the user ctrl+clicks.
 -  `li` element will be created and appended to the `ul` element if it doesn't exists.
 -  `li` consist of `div`(text content) and `span`(delete button).
 
