@@ -1,6 +1,6 @@
 # Add markers in a webpage
 
-* This add-on lets you add markers in a webpage so you can conveniently go back and forth.
+* This add-on lets you add markers in a webpage so you can conveniently go back and forth between markers.
 * Use Ctrl+click to mark
 * Click the icon on UI to partially hide UI
 * Turn on/off by clicking on the icon in the toolbar
