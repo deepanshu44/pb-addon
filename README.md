@@ -1,9 +1,9 @@
-# bookmark inside webpage
+# Add markers in a webpage
 
-* This add-on helps you in bookmarking inside a webpage in firefox browser so you can conveniently go back and forth in a page.
-* Turn off by clicking on icon in the toolbar
+* This add-on lets you add markers in a webpage so you can conveniently go back and forth.
 * Use Ctrl+click to mark
 * Click the icon on UI to partially hide UI
+* Turn on/off by clicking on the icon in the toolbar
 
 ## Download it here
 [https://addons.mozilla.org/addon/bookmark-in-webpage/](https://addons.mozilla.org/addon/bookmark-in-webpage/ "Download addon")
