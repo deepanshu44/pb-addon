@@ -1,6 +1,6 @@
 ##  Basic Flow
 -   Create html elements and add CSS to them.
--  Add a click event listener to the body which will detect <kbd>ctrl</kbd>+<kbd>click</kbd> and add corresponding element to the list.
+-  Add a click event listener to the body which will detect <kbd>ctrl</kbd>+<kbd>click</kbd> and will add corresponding element to the list.
 -  `li` element will be created and appended to the `ul` element if it doesn't exists.
 -  `li` consist of `div`(text content) and `span`(delete button).
 
