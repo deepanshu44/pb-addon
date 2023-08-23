@@ -3,7 +3,7 @@
 * This add-on lets you add markers in a webpage so you can conveniently go back and forth between markers.
 * Use Ctrl+click to mark
 * Click the icon on UI to partially hide UI
-* Turn on/off by clicking the icon on the toolbar
+* Turn on/off by clicking the addon icon on the toolbar
 
 ## Download it here
 [https://addons.mozilla.org/addon/bookmark-in-webpage/](https://addons.mozilla.org/addon/bookmark-in-webpage/ "Download addon")
