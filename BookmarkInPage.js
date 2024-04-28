@@ -191,6 +191,7 @@ class Addon {
     }
 }
 
+// TODO: add android support
 let addon = new Addon();
 addon.config();
 addon.addonInit();
