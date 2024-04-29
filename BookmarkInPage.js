@@ -9,6 +9,11 @@
 
 class Addon {
     constructor() {
+	if(navigator.maxTouchPoints>0){
+	    this.device="mobile"
+	}else {
+	    this.device="pc"
+	}
         //this will contain your marked items
         this.marksList = document.createElement("div");
         this.ul = document.createElement("ul");
@@ -32,10 +37,18 @@ class Addon {
         this.marksList.appendChild(this.ul);
 
         //pinImage
-        let pinImage = document.createElement("img");
-        pinImage.src = browser.runtime.getURL("directory/ylw-pushpin.png");
+	// FIXME: image doesnt load but only after manually edited
+	// https://stackoverflow.com/a/68456357
+        let pinImage = document.createElement("div");
+	// a work-around to make image draggable
+	// https://discourse.mozilla.org/t/security-error-when-dragging-a-moz-page-thumb/4115/6
+        pinImage.style.background = `url(${browser.runtime.getURL("directory/ylw-pushpin.png")}) no-repeat center`;
+        pinImage.style.backgroundSize = "contain";
         pinImage.className = "image";
+	pinImage.draggable=true
+	pinImage.addEventListener("dragstart", (ev)=> ev.dataTransfer.setData("text/plain", ev.target.id));
         pinImage.addEventListener("click", (e) => {
+	    console.log("clicked img in addon",e.target,e.currentTarget)
             let addon = document.querySelector(".ff-addon1");
             let addonRight = getComputedStyle(addon).right;
 
@@ -76,7 +89,10 @@ class Addon {
 
     addonInit() {
         // add event listener to body
-        document.body.addEventListener("click", (event) => {
+	// if (this.device === "android") {
+	//     window.addEventListener("dragover",(evt) => console.log("you have touced the screen",evt.target))
+	// } else {
+	    document.body.addEventListener("click", (event) => {
             let elementExists = this.liOrderArray.some(
                 (z) => z.pointTo === event.target
             );
@@ -85,7 +101,8 @@ class Addon {
             } else {
                 this.addToList(event);
             }
-        });
+        })
+	// }
     }
     addToList({ target, ctrlKey, clientY }) {
         // check if ctrl was pressed
@@ -192,6 +209,10 @@ class Addon {
 }
 
 // TODO: add android support
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent
+// alert(navigator.maxTouchPoints>0)
+// window.addEventListener("touchend",(evt) => console.log("you have touced the screen",evt.target))
+
 let addon = new Addon();
 addon.config();
 addon.addonInit();
