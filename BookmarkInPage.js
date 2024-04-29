@@ -37,13 +37,16 @@ class Addon {
         this.marksList.appendChild(this.ul);
 
         //pinImage
-	// FIXME: image doesnt load but only after manually edited
 	// https://stackoverflow.com/a/68456357
         let pinImage = document.createElement("div");
 	// a work-around to make image draggable
 	// https://discourse.mozilla.org/t/security-error-when-dragging-a-moz-page-thumb/4115/6
         pinImage.style.background = `url(${browser.runtime.getURL("directory/ylw-pushpin.png")}) no-repeat center`;
         pinImage.style.backgroundSize = "contain";
+	
+	// FIXME: image doesnt load but only after manually edited
+	pinImage.style.width="33px"
+	
         pinImage.className = "image";
 	pinImage.draggable=true
 	pinImage.addEventListener("dragstart", (ev)=> ev.dataTransfer.setData("text/plain", ev.target.id));
