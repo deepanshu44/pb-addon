@@ -46,10 +46,40 @@ class Addon {
 	
 	// FIXME: image doesnt load but only after manually edited
 	pinImage.style.width="33px"
-	
         pinImage.className = "image";
 	pinImage.draggable=true
-	pinImage.addEventListener("dragstart", (ev)=> ev.dataTransfer.setData("text/plain", ev.target.id));
+
+	// create pin drag effect
+	pinImage.addEventListener("dragstart", (ev)=> {
+	    console.log(pinImage)
+	    ev.dataTransfer.setDragImage(pinImage,30,27)
+	});
+
+	function dragOverHandler(ev) {
+            ev.preventDefault();
+	}
+	function dropHandler(ev) {
+            console.log("Drop",ev,this);
+	    this.addToList(ev.target,true)
+            ev.preventDefault();
+            // Get the data, which is the id of the drop target
+            // const data = ev.dataTransfer.getData("text");
+            // ev.target.appendChild(document.getElementById(data));
+	}
+	document.body.addEventListener("dragover",dragOverHandler)
+	document.body.addEventListener("drop",(ev)=>{
+            console.log("Drop",{...ev},this);
+	    this.addToList({target:ev.target,clientY:ev.clientY,ctrlKey:true})
+            ev.preventDefault();
+            // Get the data, which is the id of the drop target
+            // const data = ev.dataTransfer.getData("text");
+            // ev.target.appendChild(document.getElementById(data));
+	})
+	// window.addEventListener("dragenter", (event) => {
+	//     event.preventDefault();
+	// });
+	// console.log("adding",document.body)
+	// document.body.addEventListener("drop",(e) => console.log("dropped on body",e))
         pinImage.addEventListener("click", (e) => {
 	    console.log("clicked img in addon",e.target,e.currentTarget)
             let addon = document.querySelector(".ff-addon1");
@@ -108,6 +138,7 @@ class Addon {
 	// }
     }
     addToList({ target, ctrlKey, clientY }) {
+	console.log(target,ctrlKey,clientY)
         // check if ctrl was pressed
         if (ctrlKey) {
             //create list item
