@@ -9,11 +9,9 @@
 
 class Addon {
     constructor() {
-	if(navigator.maxTouchPoints>0){
-	    this.device="mobile"
-	}else {
-	    this.device="pc"
-	}
+	// if(navigator.maxTouchPoints>0){
+	//     this.smartphone=true
+	// }
         //this will contain your marked items
         this.marksList = document.createElement("div");
         this.ul = document.createElement("ul");
@@ -51,25 +49,22 @@ class Addon {
 
 	// create pin drag effect
 	pinImage.addEventListener("dragstart", (ev)=> {
-	    console.log(pinImage)
 	    ev.dataTransfer.setDragImage(pinImage,30,27)
 	});
 
 	function dragOverHandler(ev) {
             ev.preventDefault();
 	}
-	function dropHandler(ev) {
-            console.log("Drop",ev,this);
-	    this.addToList(ev.target,true)
-            ev.preventDefault();
-            // Get the data, which is the id of the drop target
-            // const data = ev.dataTransfer.getData("text");
-            // ev.target.appendChild(document.getElementById(data));
-	}
 	document.body.addEventListener("dragover",dragOverHandler)
 	document.body.addEventListener("drop",(ev)=>{
-            console.log("Drop",{...ev},this);
-	    this.addToList({target:ev.target,clientY:ev.clientY,ctrlKey:true})
+	    let elementExists = this.liOrderArray.some(
+                (z) => z.pointTo === ev.target
+            );
+            if (elementExists) {
+                //do nothing
+            } else {
+		this.addToList({target:ev.target,clientY:ev.clientY,ctrlKey:true})
+            }
             ev.preventDefault();
             // Get the data, which is the id of the drop target
             // const data = ev.dataTransfer.getData("text");
@@ -80,18 +75,18 @@ class Addon {
 	// });
 	// console.log("adding",document.body)
 	// document.body.addEventListener("drop",(e) => console.log("dropped on body",e))
-        pinImage.addEventListener("click", (e) => {
-	    console.log("clicked img in addon",e.target,e.currentTarget)
+        pinImage.addEventListener("click", (e)=>{
             let addon = document.querySelector(".ff-addon1");
             let addonRight = getComputedStyle(addon).right;
-
+	    let width = getComputedStyle(addon).width;
+	    console.log("width:",width,width*90/100)
             if (addonRight.match(/-/)) {
                 //addon is hidden
                 addon.animate(
                     [
                         // keyframes
                         { right: addonRight },
-                        { right: "1vw" }
+                        { right: "0" }
                     ],
                     {
                         // timing options
@@ -102,11 +97,13 @@ class Addon {
                 )
             } else {
                 //hide addon
+		// FIXME: adopt a cleaner approach
                 addon.animate(
                     [
                         // keyframes
                         { right: addonRight },
-                        { right: "-13vw" }
+			//hide 80% width of addon
+                        { right: `-${parseInt(width)*80/100}px` }
                     ],
                     {
                         // timing options

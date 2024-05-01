@@ -95,3 +95,13 @@
     left: 31px;
 }
 
+@media screen and (max-width: 600px){
+    .ff-addon1{
+	width: 45%;
+	top: unset;
+	bottom: 10px;
+    }
+    .ff-addon-info button{
+	left: 15px;
+    }
+}
