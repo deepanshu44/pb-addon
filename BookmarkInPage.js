@@ -9,9 +9,6 @@
 
 class Addon {
     constructor() {
-	// if(navigator.maxTouchPoints>0){
-	//     this.smartphone=true
-	// }
         //this will contain your marked items
         this.marksList = document.createElement("div");
         this.ul = document.createElement("ul");
@@ -25,7 +22,12 @@ class Addon {
     }
     config() {
         this.marksList.setAttribute("class", "ff-addon1");
-        this.marksList.innerHTML = "<div class=\"ff-addon-info\">Ctrl + L<span>\u{1F5B0}</span><button class=\"ff-addon-button\">clear</button</div>"
+	// check if user on mobile
+	if(navigator.maxTouchPoints>0){
+	    this.marksList.innerHTML = "<div class=\"ff-addon-info\">Drag pin<span></span><button class=\"ff-addon-button\">clear</button</div>"
+	}else {
+	    this.marksList.innerHTML = "<div class=\"ff-addon-info\">Ctrl + L<span>\u{1F5B0}</span><button class=\"ff-addon-button\">clear</button</div>"
+	}
 
         // hide initially
         // this.marksList.style.display = "none";
