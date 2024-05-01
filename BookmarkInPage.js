@@ -57,6 +57,7 @@ class Addon {
 	}
 	document.body.addEventListener("dragover",dragOverHandler)
 	document.body.addEventListener("drop",(ev)=>{
+	    console.log("dropped",ev.target)
 	    let elementExists = this.liOrderArray.some(
                 (z) => z.pointTo === ev.target
             );
@@ -79,7 +80,7 @@ class Addon {
             let addon = document.querySelector(".ff-addon1");
             let addonRight = getComputedStyle(addon).right;
 	    let width = getComputedStyle(addon).width;
-	    console.log("width:",width,width*90/100)
+	    console.log("clicked,width:",width,width*90/100)
             if (addonRight.match(/-/)) {
                 //addon is hidden
                 addon.animate(
@@ -114,6 +115,52 @@ class Addon {
                 )
             }
         })
+	// mobile /////////////////////////////////////////////////////////////
+	
+	pinImage.addEventListener('touchmove', function(e) {
+	    // touch event should no bubble
+	    e.preventDefault()
+	    // grab the location of touch
+	    var touchLocation = e.targetTouches[0];
+	    // while dragging, pinImage shown at some offset distance.
+	    let offsetLeft = pinImage.offsetParent.offsetLeft+100;
+	    let offsetTop = pinImage.offsetParent.offsetTop+120;
+	    pinImage.style.left = (touchLocation.screenX-offsetLeft) + "px"
+	    pinImage.style.top = (touchLocation.screenY-offsetTop) + "px"
+	})
+	
+	/* record the position of the touch
+	   when released using touchend event.
+	   This will be the drop position. */
+	
+	pinImage.addEventListener('touchend', (e)=>{
+	    // current pinImage position.
+	    pinImage.style.removeProperty("left")
+	    pinImage.style.removeProperty("top")
+	    console.log("touchend",e.changedTouches,e.target)
+	    let x = e.changedTouches[0].screenX - 100
+	    let y = e.changedTouches[0].screenY - 120 // offset taken from touchmove method, offset x is not required
+
+	    // element at the point where the user lifted their thumb (event doesn't have any data)
+	    let elem = document.elementFromPoint(x,y);
+	    // FIXME: adopt better approach
+	    // extract below logic (redundant in 3 places) to addToList method
+	    let elementExists = this.liOrderArray.some(
+                (z) => z.pointTo === elem
+            );
+            if (elementExists) {
+                //do nothing
+            } else {
+		let addonPosX = e.target.getBoundingClientRect().x;
+		let addonPosY = e.target.getBoundingClientRect().y;
+		console.log(x,addonPosX,y,addonPosY)
+		// make sure pin doesn't fall inside addon UI (UI at bottom right in mobile)
+		if (x<addonPosX && y<addonPosY) {
+		    this.addToList({target:elem,clientY:e.changedTouches[0].clientY,ctrlKey:true})
+		}
+            }
+	})
+	// mobile end /////////////////////////////////////////////////////////
         this.marksList.insertAdjacentElement("afterbegin", pinImage);
     }
 

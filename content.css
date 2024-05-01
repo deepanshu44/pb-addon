@@ -16,6 +16,7 @@
 .ff-addon1 .image{
     width: 33px;
     height: 33px;
+    padding: 22px;
     position: absolute;
     left: -5px;
     top: -24px;
