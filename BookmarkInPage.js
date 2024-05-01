@@ -23,12 +23,12 @@ class Addon {
     config() {
         this.marksList.setAttribute("class", "ff-addon1");
 	// check if user on mobile
+	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent
 	if(navigator.maxTouchPoints>0){
 	    this.marksList.innerHTML = "<div class=\"ff-addon-info\">Drag pin<span></span><button class=\"ff-addon-button\">clear</button</div>"
 	}else {
 	    this.marksList.innerHTML = "<div class=\"ff-addon-info\">Ctrl + L<span>\u{1F5B0}</span><button class=\"ff-addon-button\">clear</button</div>"
 	}
-
         // hide initially
         // this.marksList.style.display = "none";
         this.style_main.rel = "stylesheet";
@@ -37,7 +37,7 @@ class Addon {
         this.marksList.appendChild(this.ul);
 
         //pinImage
-	// https://stackoverflow.com/a/68456357
+	// https://stackoverflow.com/a/68456357 (removing border)
         let pinImage = document.createElement("div");
 	// a work-around to make image draggable
 	// https://discourse.mozilla.org/t/security-error-when-dragging-a-moz-page-thumb/4115/6
@@ -59,7 +59,6 @@ class Addon {
 	}
 	document.body.addEventListener("dragover",dragOverHandler)
 	document.body.addEventListener("drop",(ev)=>{
-	    console.log("dropped",ev.target)
 	    let elementExists = this.liOrderArray.some(
                 (z) => z.pointTo === ev.target
             );
@@ -73,16 +72,10 @@ class Addon {
             // const data = ev.dataTransfer.getData("text");
             // ev.target.appendChild(document.getElementById(data));
 	})
-	// window.addEventListener("dragenter", (event) => {
-	//     event.preventDefault();
-	// });
-	// console.log("adding",document.body)
-	// document.body.addEventListener("drop",(e) => console.log("dropped on body",e))
         pinImage.addEventListener("click", (e)=>{
             let addon = document.querySelector(".ff-addon1");
             let addonRight = getComputedStyle(addon).right;
 	    let width = getComputedStyle(addon).width;
-	    console.log("clicked,width:",width,width*90/100)
             if (addonRight.match(/-/)) {
                 //addon is hidden
                 addon.animate(
@@ -139,7 +132,6 @@ class Addon {
 	    // current pinImage position.
 	    pinImage.style.removeProperty("left")
 	    pinImage.style.removeProperty("top")
-	    console.log("touchend",e.changedTouches,e.target)
 	    let x = e.changedTouches[0].screenX - 100
 	    let y = e.changedTouches[0].screenY - 120 // offset taken from touchmove method, offset x is not required
 
@@ -155,7 +147,6 @@ class Addon {
             } else {
 		let addonPosX = e.target.getBoundingClientRect().x;
 		let addonPosY = e.target.getBoundingClientRect().y;
-		console.log(x,addonPosX,y,addonPosY)
 		// make sure pin doesn't fall inside addon UI (UI at bottom right in mobile)
 		if (x<addonPosX && y<addonPosY) {
 		    this.addToList({target:elem,clientY:e.changedTouches[0].clientY,ctrlKey:true})
@@ -169,7 +160,6 @@ class Addon {
     addonInit() {
         // add event listener to body
 	// if (this.device === "android") {
-	//     window.addEventListener("dragover",(evt) => console.log("you have touced the screen",evt.target))
 	// } else {
 	    document.body.addEventListener("click", (event) => {
             let elementExists = this.liOrderArray.some(
@@ -181,10 +171,8 @@ class Addon {
                 this.addToList(event);
             }
         })
-	// }
     }
     addToList({ target, ctrlKey, clientY }) {
-	console.log(target,ctrlKey,clientY)
         // check if ctrl was pressed
         if (ctrlKey) {
             //create list item
@@ -287,11 +275,6 @@ class Addon {
         // };
     }
 }
-
-// TODO: add android support
-// https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent
-// alert(navigator.maxTouchPoints>0)
-// window.addEventListener("touchend",(evt) => console.log("you have touced the screen",evt.target))
 
 let addon = new Addon();
 addon.config();
