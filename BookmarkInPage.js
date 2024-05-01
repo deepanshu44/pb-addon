@@ -22,8 +22,13 @@ class Addon {
     }
     config() {
         this.marksList.setAttribute("class", "ff-addon1");
-        this.marksList.innerHTML = "<div class=\"ff-addon-info\">Ctrl + L<span>\u{1F5B0}</span><button class=\"ff-addon-button\">clear</button</div>"
-
+	// check if user on mobile
+	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent
+	if(navigator.maxTouchPoints>0){
+	    this.marksList.innerHTML = "<div class=\"ff-addon-info\">Drag pin<span></span><button class=\"ff-addon-button\">clear</button</div>"
+	}else {
+	    this.marksList.innerHTML = "<div class=\"ff-addon-info\">Ctrl + L<span>\u{1F5B0}</span><button class=\"ff-addon-button\">clear</button</div>"
+	}
         // hide initially
         // this.marksList.style.display = "none";
         this.style_main.rel = "stylesheet";
@@ -32,20 +37,52 @@ class Addon {
         this.marksList.appendChild(this.ul);
 
         //pinImage
-        let pinImage = document.createElement("img");
-        pinImage.src = browser.runtime.getURL("directory/ylw-pushpin.png");
+	// https://stackoverflow.com/a/68456357 (removing border)
+        let pinImage = document.createElement("div");
+	// a work-around to make image draggable
+	// https://discourse.mozilla.org/t/security-error-when-dragging-a-moz-page-thumb/4115/6
+        pinImage.style.background = `url(${browser.runtime.getURL("directory/ylw-pushpin.png")}) no-repeat center`;
+        pinImage.style.backgroundSize = "contain";
+	
+	// FIXME: image doesnt load but only after manually edited
+	pinImage.style.width="33px"
         pinImage.className = "image";
-        pinImage.addEventListener("click", (e) => {
+	pinImage.draggable=true
+
+	// create pin drag effect
+	pinImage.addEventListener("dragstart", (ev)=> {
+	    ev.dataTransfer.setDragImage(pinImage,30,27)
+	});
+
+	function dragOverHandler(ev) {
+            ev.preventDefault();
+	}
+	document.body.addEventListener("dragover",dragOverHandler)
+	document.body.addEventListener("drop",(ev)=>{
+	    let elementExists = this.liOrderArray.some(
+                (z) => z.pointTo === ev.target
+            );
+            if (elementExists) {
+                //do nothing
+            } else {
+		this.addToList({target:ev.target,clientY:ev.clientY,ctrlKey:true})
+            }
+            ev.preventDefault();
+            // Get the data, which is the id of the drop target
+            // const data = ev.dataTransfer.getData("text");
+            // ev.target.appendChild(document.getElementById(data));
+	})
+        pinImage.addEventListener("click", (e)=>{
             let addon = document.querySelector(".ff-addon1");
             let addonRight = getComputedStyle(addon).right;
-
+	    let width = getComputedStyle(addon).width;
             if (addonRight.match(/-/)) {
                 //addon is hidden
                 addon.animate(
                     [
                         // keyframes
                         { right: addonRight },
-                        { right: "1vw" }
+                        { right: "0" }
                     ],
                     {
                         // timing options
@@ -56,11 +93,13 @@ class Addon {
                 )
             } else {
                 //hide addon
+		// FIXME: adopt a cleaner approach
                 addon.animate(
                     [
                         // keyframes
                         { right: addonRight },
-                        { right: "-13vw" }
+			//hide 80% width of addon
+                        { right: `-${parseInt(width)*80/100}px` }
                     ],
                     {
                         // timing options
@@ -71,12 +110,58 @@ class Addon {
                 )
             }
         })
+	// mobile /////////////////////////////////////////////////////////////
+	
+	pinImage.addEventListener('touchmove', function(e) {
+	    // touch event should no bubble
+	    e.preventDefault()
+	    // grab the location of touch
+	    var touchLocation = e.targetTouches[0];
+	    // while dragging, pinImage shown at some offset distance.
+	    let offsetLeft = pinImage.offsetParent.offsetLeft+100;
+	    let offsetTop = pinImage.offsetParent.offsetTop+120;
+	    pinImage.style.left = (touchLocation.screenX-offsetLeft) + "px"
+	    pinImage.style.top = (touchLocation.screenY-offsetTop) + "px"
+	})
+	
+	/* record the position of the touch
+	   when released using touchend event.
+	   This will be the drop position. */
+	
+	pinImage.addEventListener('touchend', (e)=>{
+	    // current pinImage position.
+	    pinImage.style.removeProperty("left")
+	    pinImage.style.removeProperty("top")
+	    let x = e.changedTouches[0].screenX - 70
+	    let y = e.changedTouches[0].screenY - 70 // offset taken from touchmove method, offset x is not required
+
+	    // element at the point where the user lifted their thumb (event doesn't have any data)
+	    let elem = document.elementFromPoint(x,y);
+	    // FIXME: adopt better approach
+	    // extract below logic (redundant in 3 places) to addToList method
+	    let elementExists = this.liOrderArray.some(
+                (z) => z.pointTo === elem
+            );
+            if (elementExists) {
+                //do nothing
+            } else {
+		let addonPosX = e.target.getBoundingClientRect().x;
+		let addonPosY = e.target.getBoundingClientRect().y;
+		// make sure pin doesn't fall inside addon UI (UI at bottom right in mobile)
+		if (x<addonPosX && y<addonPosY) {
+		    this.addToList({target:elem,clientY:e.changedTouches[0].clientY,ctrlKey:true})
+		}
+            }
+	})
+	// mobile end /////////////////////////////////////////////////////////
         this.marksList.insertAdjacentElement("afterbegin", pinImage);
     }
 
     addonInit() {
         // add event listener to body
-        document.body.addEventListener("click", (event) => {
+	// if (this.device === "android") {
+	// } else {
+	    document.body.addEventListener("click", (event) => {
             let elementExists = this.liOrderArray.some(
                 (z) => z.pointTo === event.target
             );
@@ -85,7 +170,7 @@ class Addon {
             } else {
                 this.addToList(event);
             }
-        });
+        })
     }
     addToList({ target, ctrlKey, clientY }) {
         // check if ctrl was pressed
@@ -191,7 +276,6 @@ class Addon {
     }
 }
 
-// TODO: add android support
 let addon = new Addon();
 addon.config();
 addon.addonInit();
