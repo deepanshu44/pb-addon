@@ -132,8 +132,8 @@ class Addon {
 	    // current pinImage position.
 	    pinImage.style.removeProperty("left")
 	    pinImage.style.removeProperty("top")
-	    let x = e.changedTouches[0].screenX - 100
-	    let y = e.changedTouches[0].screenY - 120 // offset taken from touchmove method, offset x is not required
+	    let x = e.changedTouches[0].screenX - 70
+	    let y = e.changedTouches[0].screenY - 70 // offset taken from touchmove method, offset x is not required
 
 	    // element at the point where the user lifted their thumb (event doesn't have any data)
 	    let elem = document.elementFromPoint(x,y);
