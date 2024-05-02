@@ -133,7 +133,6 @@ class Addon {
 	   when released using touchend event.
 	   This will be the drop position. */
 	pinImage.addEventListener('touchend', (e)=>{
-	    // console.log(getComputedStyle(this.marksList).left)
 	    // current pinImage position.
 	    pinImage.style.removeProperty("left")
 	    pinImage.style.removeProperty("top")
