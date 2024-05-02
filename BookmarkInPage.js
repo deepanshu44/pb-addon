@@ -133,7 +133,6 @@ class Addon {
 	   when released using touchend event.
 	   This will be the drop position. */
 	pinImage.addEventListener('touchend', (e)=>{
-	    // console.log(getComputedStyle(this.marksList).left)
 	    // current pinImage position.
 	    pinImage.style.removeProperty("left")
 	    pinImage.style.removeProperty("top")
@@ -154,8 +153,6 @@ class Addon {
 		let addonPosY = e.target.getBoundingClientRect().y;
 		// make sure pin doesn't fall inside addon UI (UI at bottom right in mobile)
 		if (this.moving && x<addonPosX && y<addonPosY) {
-		    console.log("adding to list",x,y,addonPosX,addonPosY)
-		    console.log("elem at:",document.elementFromPoint(x,y))
 		    this.addToList({target:elem,clientY:e.changedTouches[0].clientY,ctrlKey:true})
 		}
 		this.moving=false
