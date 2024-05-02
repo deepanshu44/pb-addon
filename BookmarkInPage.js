@@ -48,7 +48,7 @@ class Addon {
 	pinImage.style.width="33px"
         pinImage.className = "image";
 	pinImage.draggable=true
-
+	pinImage.style.zIndex="9999"
 	// create pin drag effect
 	pinImage.addEventListener("dragstart", (ev)=> {
 	    ev.dataTransfer.setDragImage(pinImage,30,27)
@@ -73,6 +73,7 @@ class Addon {
             // ev.target.appendChild(document.getElementById(data));
 	})
         pinImage.addEventListener("click", (e)=>{
+	    console.log("click")
             let addon = document.querySelector(".ff-addon1");
             let addonRight = getComputedStyle(addon).right;
 	    let width = getComputedStyle(addon).width;
@@ -111,15 +112,19 @@ class Addon {
             }
         })
 	// mobile /////////////////////////////////////////////////////////////
-	
-	pinImage.addEventListener('touchmove', function(e) {
+
+	pinImage.addEventListener('touchmove', (e) => {
 	    // touch event should no bubble
 	    e.preventDefault()
+	    // to prevent adding objects to list when pin is clicked/tapped
+	    this.moving=true
 	    // grab the location of touch
 	    var touchLocation = e.targetTouches[0];
 	    // while dragging, pinImage shown at some offset distance.
 	    let offsetLeft = pinImage.offsetParent.offsetLeft+100;
 	    let offsetTop = pinImage.offsetParent.offsetTop+120;
+	    console.log("offset",touchLocation,touchLocation.screenY-offsetTop,touchLocation.screenX-offsetLeft)
+	    console.log(offsetLeft,offsetTop)
 	    pinImage.style.left = (touchLocation.screenX-offsetLeft) + "px"
 	    pinImage.style.top = (touchLocation.screenY-offsetTop) + "px"
 	})
@@ -127,8 +132,8 @@ class Addon {
 	/* record the position of the touch
 	   when released using touchend event.
 	   This will be the drop position. */
-	
 	pinImage.addEventListener('touchend', (e)=>{
+	    // console.log(getComputedStyle(this.marksList).left)
 	    // current pinImage position.
 	    pinImage.style.removeProperty("left")
 	    pinImage.style.removeProperty("top")
@@ -148,9 +153,12 @@ class Addon {
 		let addonPosX = e.target.getBoundingClientRect().x;
 		let addonPosY = e.target.getBoundingClientRect().y;
 		// make sure pin doesn't fall inside addon UI (UI at bottom right in mobile)
-		if (x<addonPosX && y<addonPosY) {
+		if (this.moving && x<addonPosX && y<addonPosY) {
+		    console.log("adding to list",x,y,addonPosX,addonPosY)
+		    console.log("elem at:",document.elementFromPoint(x,y))
 		    this.addToList({target:elem,clientY:e.changedTouches[0].clientY,ctrlKey:true})
 		}
+		this.moving=false
             }
 	})
 	// mobile end /////////////////////////////////////////////////////////
