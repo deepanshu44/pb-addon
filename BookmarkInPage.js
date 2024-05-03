@@ -45,12 +45,12 @@ class Addon {
         pinImage.style.backgroundSize = "contain";
 	
 	// FIXME: image doesnt load but only after manually edited
-	pinImage.style.width="33px"
+	// pinImage.style.width="0px"
         pinImage.className = "image";
 	pinImage.draggable=true
-	pinImage.style.zIndex="9999"
 	// create pin drag effect
 	pinImage.addEventListener("dragstart", (ev)=> {
+	    // this event only supported on pc 
 	    ev.dataTransfer.setDragImage(pinImage,30,27)
 	});
 
@@ -73,7 +73,7 @@ class Addon {
             // ev.target.appendChild(document.getElementById(data));
 	})
         pinImage.addEventListener("click", (e)=>{
-	    console.log("click")
+	    // this event will be fired both on mobile and pc
             let addon = document.querySelector(".ff-addon1");
             let addonRight = getComputedStyle(addon).right;
 	    let width = getComputedStyle(addon).width;
@@ -111,7 +111,7 @@ class Addon {
                 )
             }
         })
-	// mobile /////////////////////////////////////////////////////////////
+	// MOBILE /////////////////////////////////////////////////////////////
 
 	pinImage.addEventListener('touchmove', (e) => {
 	    // touch event should no bubble
@@ -123,8 +123,6 @@ class Addon {
 	    // while dragging, pinImage shown at some offset distance.
 	    let offsetLeft = pinImage.offsetParent.offsetLeft+100;
 	    let offsetTop = pinImage.offsetParent.offsetTop+120;
-	    console.log("offset",touchLocation,touchLocation.screenY-offsetTop,touchLocation.screenX-offsetLeft)
-	    console.log(offsetLeft,offsetTop)
 	    pinImage.style.left = (touchLocation.screenX-offsetLeft) + "px"
 	    pinImage.style.top = (touchLocation.screenY-offsetTop) + "px"
 	})
@@ -158,7 +156,8 @@ class Addon {
 		this.moving=false
             }
 	})
-	// mobile end /////////////////////////////////////////////////////////
+	// END MOBILE /////////////////////////////////////////////////////////
+
         this.marksList.insertAdjacentElement("afterbegin", pinImage);
     }
 
