@@ -13,6 +13,7 @@ Click on image for video demonstration
 
 ## todo
 * persisting entries using storage api
+* Improve performance
 * ~~UI improvement~~
 * ~~ablity to delete entries(stylesheet bug first needed to be resolved)~~
 * ~~add smooth scroll~~
