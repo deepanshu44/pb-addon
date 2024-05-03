@@ -13,12 +13,14 @@
 
 }
 .ff-addon1 .image{
-    width: 33px;
-    height: 33px;
+    /* width: 33px; */
+    /* height: 33px; */
     padding: 22px;
     position: absolute;
     left: -5px;
     top: -24px;
+    /* should click pin and not parent */
+    z-index: 9999;
 }
 .ff-addon1 ul {
     font-size: 0.7em;
@@ -93,6 +95,9 @@
     border-radius: 4px;
     position: relative;
     left: 31px;
+    height:23px;
+    /* to avoid overide by website'css */
+    line-height: 0 !important;
 }
 
 @media screen and (max-width: 600px){
