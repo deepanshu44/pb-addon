@@ -5,7 +5,7 @@
 * Click the icon on UI to partially hide UI
 * Turn on/off by clicking the addon icon on the toolbar
 
-## Download it here
+## Download it here (also works on mobile)
 [https://addons.mozilla.org/addon/bookmark-in-webpage/](https://addons.mozilla.org/addon/bookmark-in-webpage/ "Download addon")
 
 Click on image for video demonstration  
