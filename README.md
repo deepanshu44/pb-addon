@@ -18,7 +18,6 @@ Click on image for video demonstration
 * ~~ablity to delete entries(stylesheet bug first needed to be resolved)~~
 * ~~add smooth scroll~~
 * dark/light mode
-* zooming
 
 ## Contribute
 Contributions are welcome
