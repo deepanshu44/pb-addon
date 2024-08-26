@@ -14,6 +14,7 @@ Click on image for video demonstration
 ## todo
 * persisting entries using storage api
 * Improve performance
+* add index functionality
 * ~~UI improvement~~
 * ~~ablity to delete entries(stylesheet bug first needed to be resolved)~~
 * ~~add smooth scroll~~
