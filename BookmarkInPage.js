@@ -161,20 +161,36 @@ class Addon {
         this.marksList.insertAdjacentElement("afterbegin", pinImage);
     }
 
-    addonInit() {
+    async addonInit() {
         // add event listener to body
 	// if (this.device === "android") {
 	// } else {
-	    document.body.addEventListener("click", (event) => {
+	document.body.addEventListener("click", async (event) => {
             let elementExists = this.liOrderArray.some(
                 (z) => z.pointTo === event.target
             );
             if (elementExists) {
                 //do nothing
             } else {
-                this.addToList(event);
+		this.addToList(event);
             }
         })
+
+	const {[location.href]:listArray} = await browser.storage.local.get(location.href)
+	if (listArray) {
+	    // populate user UI
+	    listArray.forEach((data) => {
+		let args = {
+		    target:document.querySelector(data),
+		    ctrlKey:true
+		};
+		this.addToList(args)
+	    })
+	}else {
+	    // first time setup for local storage
+	    await browser.storage.local.set({[location.href]:[]})
+	}
+
     }
     addToList({ target, ctrlKey, clientY }) {
         // check if ctrl was pressed
@@ -250,6 +266,7 @@ class Addon {
                 );
                 index = this.liOrderArray.length - 1;
             }
+	    this.updateLocalStorage(target)
             setTimeout(() => {
                 li.removeAttribute("class");
             }, 500);
@@ -261,9 +278,47 @@ class Addon {
                 );
                 setTimeout(() => {
                     this.ul.removeChild(this.liOrderArray.splice(index, 1)[0].button);
+		    this.updateLocalStorage(null,index)
                 }, 500);
             };
         }
+    }
+
+    async updateLocalStorage(target,index) {
+	if (index >= -1) {
+	    // delete element from local storage
+	    const {[location.href]:listArray} = await browser.storage.local.get(location.href)
+	    listArray.splice(index,1)
+	    await browser.storage.local.set({[location.href]:listArray})
+	    return
+	}
+	//executed after adding an element
+	function selectorMaker(element) {
+            let attributesList = Array.from(element.attributes);
+	    let elementSelector = `${element.tagName.toLowerCase()}${attributesList.map((atr) =>
+		`[${atr.nodeName}='${atr.nodeValue}']`).join("")}`;
+
+	    if (document.querySelectorAll(elementSelector).length === 1) {
+		// element is unique in the DOM tree
+		return elementSelector
+	    } else {
+		// traverse up the DOM tree until a unique parent is found
+		if (element.parentElement.childElementCount>1) {
+		    //if element has siblings, then find element's position
+		    let siblings = Array.from(element.parentElement.childNodes)
+		    let index = siblings.findIndex((sib) => sib === element)
+		    return selectorMaker(element.parentElement)+">"+elementSelector+`:nth-child(${index+1})`
+		} else {
+		    return selectorMaker(element.parentElement)+">"+elementSelector
+		}
+	    }
+	}
+	let selector = selectorMaker(target);
+
+	let {[location.href]:listArray} = await browser.storage.local.get(location.href)
+	listArray.push(selector)
+	await browser.storage.local.set({[location.href]:listArray})
+	    .catch((error) => console.log("error updateLocalStorage",error))
     }
     zoom() {
         /*
