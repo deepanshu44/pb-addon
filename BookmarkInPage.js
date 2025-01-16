@@ -162,6 +162,7 @@ class Addon {
     }
 
     async addonInit() {
+	// console.log(browser.tabs.TabStatus)
         // add event listener to body
 	// if (this.device === "android") {
 	// } else {
@@ -180,11 +181,20 @@ class Addon {
 	if (listArray) {
 	    // populate user UI
 	    listArray.forEach((data) => {
-		let args = {
-		    target:document.querySelector(data),
-		    ctrlKey:true
-		};
-		this.addToList(args)
+		let target = document.querySelector(data);
+		// Target can be null when element doesn't exist
+		// any more or any attributes were modified.
+		// So, in that case, just remove that element.
+		if (target) {
+		    // console.log(listArray)
+		    let args = {
+			target,
+			ctrlKey:true
+		    };
+		    // 2nd argument is meant to say, that since this
+		    // is populating phase, do not update local storage!
+		    this.addToList(args,true)
+		}
 	    })
 	}else {
 	    // first time setup for local storage
@@ -192,7 +202,7 @@ class Addon {
 	}
 
     }
-    addToList({ target, ctrlKey, clientY }) {
+    addToList({ target, ctrlKey, clientY },init) {
         // check if ctrl was pressed
         if (ctrlKey) {
             //create list item
@@ -266,7 +276,9 @@ class Addon {
                 );
                 index = this.liOrderArray.length - 1;
             }
-	    this.updateLocalStorage(target)
+	    if (!init) {
+		this.updateLocalStorage(target,index)
+	    }
             setTimeout(() => {
                 li.removeAttribute("class");
             }, 500);
@@ -285,7 +297,7 @@ class Addon {
     }
 
     async updateLocalStorage(target,index) {
-	if (index >= -1) {
+	if (!target) {
 	    // delete element from local storage
 	    const {[location.href]:listArray} = await browser.storage.local.get(location.href)
 	    listArray.splice(index,1)
@@ -316,7 +328,7 @@ class Addon {
 	let selector = selectorMaker(target);
 
 	let {[location.href]:listArray} = await browser.storage.local.get(location.href)
-	listArray.push(selector)
+	listArray.splice(index,0,selector)
 	await browser.storage.local.set({[location.href]:listArray})
 	    .catch((error) => console.log("error updateLocalStorage",error))
     }
@@ -335,37 +347,44 @@ class Addon {
     }
 }
 
-let addon = new Addon();
-addon.config();
-addon.addonInit();
-let ref = addon.marksList
+
 let power = false; //initially do not display
+let addon = undefined
+let ref = undefined
+browser.runtime.onMessage.addListener((msg) => {
+    if (msg.status === "DOMLoaded"){
+	// enable the addon in webpage
+	addon = new Addon();
+	ref = addon.marksList
+	addon.config();
+	addon.addonInit();
 
-browser.runtime.onMessage.addListener((request) => {
-    // enable the addon in webpage
-    if (power) {
-        document.body.removeChild(ref)
-        power = !power
-    } else {
-        document.body.appendChild(ref)
-        power = !power
+	// disable ctrl click on addon UI 
+	ref.addEventListener("click", (e) => {
+	    if (e.ctrlKey) {
+		e.stopPropagation()
+	    }
+	    if (e.target.innerHTML === "clear") {
+
+		let ul = document.querySelector(".ff-addon1 ul")
+		let count = ul.childElementCount;
+		while (count--) {
+		    document.querySelector(".ff-addon1 ul span").click()
+		}
+		browser.storage.local.set({[location.href]:[]})
+		    .catch((error) => console.log("error in clearing",error))
+	    }
+	})
+	
     }
-    return Promise.resolve({ response: "Hi from content script" });
+    if (msg.icon_click) {
+	if (power) {
+            document.body.removeChild(ref)
+            power = !power
+	} else {
+            document.body.appendChild(ref)
+            power = !power
+	}
+    }
+    // return Promise.resolve({ response: "Hi from content script" });
 });
-
-
-
-// disable ctrl click on addon UI 
-ref.addEventListener("click", (e) => {
-    if (e.ctrlKey) {
-        e.stopPropagation()
-    }
-    if (e.target.innerHTML === "clear") {
-
-        let ul = document.querySelector(".ff-addon1 ul")
-        let count = ul.childElementCount;
-        while (count--) {
-            document.querySelector(".ff-addon1 ul span").click()
-        }
-    }
-})
