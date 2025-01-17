@@ -196,9 +196,10 @@ class Addon {
 		    this.addToList(args,true)
 		}
 	    })
+	    return true
 	}else {
 	    // first time setup for local storage
-	    await browser.storage.local.set({[location.href]:[]})
+	    return false;
 	}
 
     }
@@ -353,15 +354,19 @@ class Addon {
 
 
 let power = false; //initially do not display
-let addon = undefined
-let ref = undefined
-browser.runtime.onMessage.addListener((msg) => {
+let addon = new Addon();
+let ref = addon.marksList
+
+
+browser.runtime.onMessage.addListener(async (msg) => {
     if (msg.status === "DOMLoaded"){
 	// enable the addon in webpage
-	addon = new Addon();
-	ref = addon.marksList
 	addon.config();
-	addon.addonInit();
+	let addonHasContent = await addon.addonInit();
+	if (addonHasContent) {
+	    document.body.appendChild(ref)
+	    power = !power
+	}
 
 	// disable ctrl click on addon UI 
 	ref.addEventListener("click", (e) => {
@@ -375,7 +380,7 @@ browser.runtime.onMessage.addListener((msg) => {
 		while (count--) {
 		    document.querySelector(".ff-addon1 ul span").click()
 		}
-		browser.storage.local.set({[location.href]:[]})
+		browser.storage.local.remove([location.href])
 		    .catch((error) => console.log("error in clearing",error))
 	    }
 	})
@@ -386,8 +391,16 @@ browser.runtime.onMessage.addListener((msg) => {
             document.body.removeChild(ref)
             power = !power
 	} else {
-            document.body.appendChild(ref)
-            power = !power
+	    let {[location.href]:listArray} = await browser.storage.local.get(location.href)
+	    if (!listArray) {
+		try {
+		    await browser.storage.local.set({[location.href]:[]})
+		} catch({message}) {
+		    console.log("error->",message)
+		}
+	    }
+	    document.body.appendChild(ref)
+	    power = !power
 	}
     }
     // return Promise.resolve({ response: "Hi from content script" });
