@@ -321,7 +321,7 @@ class Addon {
 		// traverse up the DOM tree until a unique parent is found
 		if (element.parentElement.childElementCount>1) {
 		    //if element has siblings, then find element's position
-		    let siblings = Array.from(element.parentElement.childNodes)
+		    let siblings = Array.from(element.parentElement.children)
 		    let index = siblings.findIndex((sib) => sib === element)
 		    return selectorMaker(element.parentElement)+">"+elementSelector+`:nth-child(${index+1})`
 		} else {
