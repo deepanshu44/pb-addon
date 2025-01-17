@@ -242,10 +242,14 @@ class Addon {
 
             //find postion for element to be placed in the array in order of
             //its appearance in the document
-            let scrollHeight = window.scrollY + clientY + this.factor;
+            // let scrollHeight = window.scrollY + clientY +
+	    // this.factor;
+	    let scrollHeight = target.getBoundingClientRect().top
             let index = this.liOrderArray.findIndex((z, i) => {
-                // findIndex will return minus 1 if array empty and condition is false
-                if (scrollHeight < z.scrollHeight) {
+                // findIndex will return minus 1 if array empty and
+		// condition is false
+		let zHeight = z.pointTo.getBoundingClientRect().top;
+                if (scrollHeight < zHeight) {
                     return true;
                 }
             });
