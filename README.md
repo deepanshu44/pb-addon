@@ -8,7 +8,7 @@
 ## Download it here (also works on mobile)
 [https://addons.mozilla.org/addon/bookmark-in-webpage/](https://addons.mozilla.org/addon/bookmark-in-webpage/ "Download addon")
 
-[Working on mobile] (https://youtu.be/qfJ9L6lrvpc?si=RRi7v1zF6L7xM6Og)
+[Working on mobile](https://youtu.be/qfJ9L6lrvpc?si=RRi7v1zF6L7xM6Og)
 Click on image for video demonstration  
 [![Screenshot of the Firefox Addon](./directory/addon.png?raw=true)](https://youtu.be/f9lBxirdrcA)
 
