@@ -4,6 +4,7 @@
 * Drag the yellow pin 📌 or use Ctrl+click to mark
 * Click the icon on UI to partially hide UI
 * Turn on/off by clicking the addon icon on the toolbar
+* Entries are saved in local storage
 
 ## Download it here (also works on mobile)
 [https://addons.mozilla.org/addon/bookmark-in-webpage/](https://addons.mozilla.org/addon/bookmark-in-webpage/ "Download addon")
@@ -14,9 +15,7 @@ Click on image for video demonstration
 [![Screenshot of the Firefox Addon](./directory/addon.png?raw=true)](https://youtu.be/f9lBxirdrcA)
 
 ## todo
-* persisting entries using storage api
 * Improve performance
-* add index functionality
 * add color customization option
 
 ## Contribute
