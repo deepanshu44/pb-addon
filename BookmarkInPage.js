@@ -149,9 +149,12 @@ class Addon {
             } else {
 		let addonPosX = e.target.getBoundingClientRect().x;
 		let addonPosY = e.target.getBoundingClientRect().y;
-		// make sure pin doesn't fall inside addon UI (UI at bottom right in mobile)
-		if (this.moving && x<addonPosX && y<addonPosY) {
-		    this.addToList({target:elem,clientY:e.changedTouches[0].clientY,ctrlKey:true})
+		// make sure pin doesn't fall inside addon UI (UI at
+		// bottom right in mobile)
+		if (this.moving) {
+		    if (!(x>addonPosX && y>addonPosY)) {
+			this.addToList({target:elem,clientY:e.changedTouches[0].clientY,ctrlKey:true})
+		    }
 		}
 		this.moving=false
             }
