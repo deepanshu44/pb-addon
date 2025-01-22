@@ -166,42 +166,44 @@ class Addon {
         // add event listener to body
 	// if (this.device === "android") {
 	// } else {
-	document.body.addEventListener("click", async (event) => {
-            let elementExists = this.liOrderArray.some(
-                (z) => z.pointTo === event.target
-            );
-            if (elementExists) {
-                //do nothing
-            } else {
-		this.addToList(event);
-            }
-        })
-
-	const {[location.href]:listArray} = await browser.storage.local.get(location.href)
-	if (listArray) {
-	    // populate user UI
-	    listArray.forEach((data) => {
-		let target = document.querySelector(data);
-		// Target can be null when element doesn't exist
-		// any more or any attributes were modified.
-		// So, in that case, just remove that element.
-		if (target) {
-		    // console.log(listArray)
-		    let args = {
-			target,
-			ctrlKey:true
-		    };
-		    // 2nd argument is meant to say, that since this
-		    // is populating phase, do not update local storage!
-		    this.addToList(args,true)
+	// execute only once if DOMLoaded fires again
+	if (!this.liOrderArray.length) {
+	    document.body.addEventListener("click", async (event) => {
+		let elementExists = this.liOrderArray.some(
+                    (z) => z.pointTo === event.target
+		);
+		if (elementExists) {
+                    //do nothing
+		} else {
+		    this.addToList(event);
 		}
-	    })
-	    return true
-	}else {
-	    // first time setup for local storage
-	    return false;
-	}
+            })
 
+	    const {[location.href]:listArray} = await browser.storage.local.get(location.href)
+	    if (listArray) {
+		// populate user UI
+		listArray.forEach((data) => {
+		    let target = document.querySelector(data);
+		    // Target can be null when element doesn't exist
+		    // any more or any attributes were modified.
+		    // So, in that case, just remove that element.
+		    if (target) {
+			// console.log(listArray)
+			let args = {
+			    target,
+			    ctrlKey:true
+			};
+			// 2nd argument is meant to say, that since this
+			// is populating phase, do not update local storage!
+			this.addToList(args,true)
+		    }
+		})
+		return true
+	    }else {
+		// first time setup for local storage
+		return false;
+	    }
+	} 
     }
     addToList({ target, ctrlKey, clientY },init) {
         // check if ctrl was pressed
